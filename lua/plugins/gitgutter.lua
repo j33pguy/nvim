@@ -9,7 +9,7 @@ return {
     { "<leader>ghu", "<Plug>(GitGutterUndoHunk)", desc = "Undo Hunk" },
   },
   init = function()
-    vim.g.gitgutter_map_keys = 1          -- disable defaults
+    vim.g.gitgutter_map_keys = 0          -- disable defaults
     vim.g.gitgutter_sign_priority = 5     -- optional: lower than LSP/gitsigns
   end,
 }

@@ -4,7 +4,7 @@
 return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    branch = "main", -- or remove if you want latest
+    branch = "master", -- legacy branch; "main" removed nvim-treesitter.configs, which this config uses
     config = function()
         local ok, configs = pcall(require, "nvim-treesitter.configs")
         if not ok then

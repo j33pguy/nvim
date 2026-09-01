@@ -48,6 +48,7 @@ return {
       { "<leader>f", group = "Git / Floaterm" },
       { "<leader>g", group = "Go / Git hunk" },
       { "<leader>n", group = "Neo-tree / Neogen" },
+      { "<leader>o", group = "Obsidian" },
       { "<leader>t", group = "Trouble / Tagbar / TODO" },
       { "<leader>s", group = "Search (Telescope)" },
       { "<leader>c", group = "Code / Comments" },

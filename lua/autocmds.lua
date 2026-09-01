@@ -5,11 +5,12 @@ local api = vim.api
 local lsp = vim.lsp
 local cmd = vim.cmd
 
--- format on save via attached LSP
+-- format on save when an attached LSP actually supports formatting
+-- (obsidian-ls attaches to vault notes but can't format; don't warn on every :w)
 api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     callback = function()
-        if lsp.buf_is_attached(0) then
+        if #lsp.get_clients({ bufnr = 0, method = "textDocument/formatting" }) > 0 then
             lsp.buf.format({ async = false })
         end
     end,
@@ -20,6 +21,14 @@ api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     callback = function()
         cmd([[ %s/\s\+$//e ]])
+    end,
+})
+
+-- obsidian.nvim UI features require conceallevel 1 or 2
+api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function()
+        vim.opt_local.conceallevel = 2
     end,
 })
 
