@@ -9,13 +9,13 @@ return {
         local colors = {
             bg     = utils.get_highlight("Normal").bg,
             fg     = utils.get_highlight("Normal").fg,
-            red    = "#e06c75",
-            green  = "#98c379",
-            yellow = "#e5c07b",
-            blue   = "#61afef",
-            purple = "#c678dd",
-            cyan   = "#56b6c2",
-            gray   = "#5c6370",
+            red    = "#ff005f",
+            green  = "#5ff967",
+            yellow = "#ffdd00",
+            blue   = "#0088ff",
+            purple = "#c526ff",
+            cyan   = "#40e0d0",
+            gray   = "#767c88",
         }
 
         local Space = { provider = " " }

@@ -1,3 +1,4 @@
+require("config.remote_clipboard").setup()  -- OSC-52 clipboard (matters inside tmux/ssh)
 -- filename: options.lua
 -- path: lua/options.lua
 
