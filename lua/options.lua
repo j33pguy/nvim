@@ -50,3 +50,11 @@ g.diagnostics_mode         = 3
 g.icons_enabled            = true
 g.ui_notifications_enabled = true
 g.resession_enabled        = false
+
+-- Remote providers. None of these are used here, and each one is probed at
+-- startup and reported as a WARNING by :checkhealth. Neovim's own Lua is the
+-- only host this config needs.
+g.loaded_perl_provider   = 0
+g.loaded_ruby_provider   = 0
+g.loaded_node_provider   = 0
+g.loaded_python3_provider = 0
