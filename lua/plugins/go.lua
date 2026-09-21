@@ -14,7 +14,13 @@ return {
         lsp_gofumpt = true,
         lsp_keymaps = true,
         dap_debug = true,
-        luasnip = true,
+        -- go.nvim's own default is false. Its snips/go.lua:173 does
+        --   local is_in_function = require('go.ts.go').in_func()
+        -- i.e. it CALLS in_func at module-load time (and line 218 then tries to
+        -- call the boolean result). Under Neovim 0.12 that load-time call trips
+        -- the new assert in vim.treesitter.get_node and throws on every Go file.
+        -- Upstream master still has the typo. Re-enable when it's fixed.
+        luasnip = false,
         textobjects = true,
         trouble = true,
         test_runner = "go",
