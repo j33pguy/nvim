@@ -6,17 +6,22 @@ return {
         local conditions = require("heirline.conditions")
         local utils = require("heirline.utils")
 
-        local colors = {
-            bg     = utils.get_highlight("Normal").bg,
-            fg     = utils.get_highlight("Normal").fg,
-            red    = "#ff005f",
-            green  = "#5ff967",
-            yellow = "#ffdd00",
-            blue   = "#0088ff",
-            purple = "#c526ff",
-            cyan   = "#40e0d0",
-            gray   = "#767c88",
-        }
+        -- pulled from the active colorscheme so the statusline follows
+        -- `omarchy theme set`. components reference these by name.
+        local function setup_colors()
+            local hl = function(name) return utils.get_highlight(name) end
+            return {
+                bg     = hl("Normal").bg or "black",
+                fg     = hl("Normal").fg,
+                red    = hl("DiagnosticError").fg,
+                green  = hl("String").fg,
+                yellow = hl("DiagnosticWarn").fg,
+                blue   = vim.g.terminal_color_4 or hl("DiagnosticInfo").fg,
+                purple = hl("Directory").fg,
+                cyan   = hl("Function").fg,
+                gray   = hl("LineNr").fg,
+            }
+        end
 
         local Space = { provider = " " }
         local Align = { provider = "%=" }
@@ -28,21 +33,21 @@ return {
             end,
             hl = function()
                 local mode_color = {
-                    n = colors.blue,
-                    i = colors.green,
-                    v = colors.yellow,
-                    V = colors.yellow,
-                    [""] = colors.yellow,
-                    c = colors.red,
-                    s = colors.purple,
-                    S = colors.purple,
-                    [""] = colors.purple,
-                    R = colors.red,
-                    r = colors.red,
-                    ["!"] = colors.red,
-                    t = colors.cyan,
+                    n = "blue",
+                    i = "green",
+                    v = "yellow",
+                    V = "yellow",
+                    [""] = "yellow",
+                    c = "red",
+                    s = "purple",
+                    S = "purple",
+                    [""] = "purple",
+                    R = "red",
+                    r = "red",
+                    ["!"] = "red",
+                    t = "cyan",
                 }
-                return { fg = "black", bg = mode_color[vim.fn.mode()] or colors.gray, bold = true }
+                return { fg = "bg", bg = mode_color[vim.fn.mode()] or "gray", bold = true }
             end,
             update = { "ModeChanged" },
         }
@@ -57,7 +62,7 @@ return {
             end,
             hl = function(self)
                 local _, color = require("nvim-web-devicons").get_icon_color(self.filename)
-                return { fg = color or colors.cyan }
+                return { fg = color or "cyan" }
             end,
         }
 
@@ -66,19 +71,19 @@ return {
                 local fname = vim.fn.fnamemodify(self.filename, ":t")
                 return fname == "" and "[No Name]" or fname
             end,
-            hl = { fg = colors.cyan, bold = true },
+            hl = { fg = "cyan", bold = true },
         }
 
         local FileFlags = {
             {
                 condition = function() return vim.bo.modified end,
                 provider = "  ●  ",
-                hl = { fg = colors.green },
+                hl = { fg = "green" },
             },
             {
                 condition = function() return not vim.bo.modifiable or vim.bo.readonly end,
                 provider = "    ",
-                hl = { fg = colors.red },
+                hl = { fg = "red" },
             },
         }
 
@@ -87,7 +92,7 @@ return {
             init = function(self)
                 self.status_dict = vim.b.gitsigns_status_dict or {}
             end,
-            hl = { fg = colors.purple },
+            hl = { fg = "purple" },
             {
                 provider = function(self)
                     return "   " .. (self.status_dict.head or "") .. "  "
@@ -98,21 +103,21 @@ return {
                     local added = self.status_dict.added or 0
                     return added > 0 and ("   " .. added .. "  ") or ""
                 end,
-                hl = { fg = colors.green },
+                hl = { fg = "green" },
             },
             {
                 provider = function(self)
                     local changed = self.status_dict.changed or 0
                     return changed > 0 and ("   " .. changed .. "  ") or ""
                 end,
-                hl = { fg = colors.yellow },
+                hl = { fg = "yellow" },
             },
             {
                 provider = function(self)
                     local removed = self.status_dict.removed or 0
                     return removed > 0 and ("   " .. removed .. "  ") or ""
                 end,
-                hl = { fg = colors.red },
+                hl = { fg = "red" },
             },
         }
 
@@ -131,25 +136,25 @@ return {
                 self.hints    = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
             end,
             update = { "DiagnosticChanged", "BufEnter" },
-            hl = { fg = colors.gray },
+            hl = { fg = "gray" },
             {
                 provider = function(self) return self.errors > 0 and
                     ("  " .. self.error_icon .. " " .. self.errors .. "  ") end,
-                hl = { fg = colors.red },
+                hl = { fg = "red" },
             },
             {
                 provider = function(self) return self.warnings > 0 and
                     ("  " .. self.warn_icon .. " " .. self.warnings .. "  ") end,
-                hl = { fg = colors.yellow },
+                hl = { fg = "yellow" },
             },
             {
                 provider = function(self) return self.info > 0 and ("  " .. self.info_icon .. " " .. self.info .. "  ") end,
-                hl = { fg = colors.blue },
+                hl = { fg = "blue" },
             },
             {
                 provider = function(self) return self.hints > 0 and
                     ("  " .. self.hint_icon .. " " .. self.hints .. "  ") end,
-                hl = { fg = colors.cyan },
+                hl = { fg = "cyan" },
             },
         }
 
@@ -162,17 +167,17 @@ return {
                 end
                 return "   " .. table.concat(names, ",") .. "  "
             end,
-            hl = { fg = colors.green },
+            hl = { fg = "green" },
         }
 
         local FileType = {
             provider = function() return "  " .. vim.bo.filetype:upper() .. "  " end,
-            hl = { fg = colors.gray, bold = true },
+            hl = { fg = "gray", bold = true },
         }
 
         local Position = {
             provider = "  %3l:%-2c %p%%  ",
-            hl = { fg = colors.cyan },
+            hl = { fg = "cyan" },
         }
 
         local StatusLine = {
@@ -192,11 +197,12 @@ return {
 
         require("heirline").setup({
             statusline = StatusLine,
-            colors = colors,
+            opts = { colors = setup_colors },
         })
 
         vim.api.nvim_create_autocmd("ColorScheme", {
-            callback = function() utils.on_colorscheme(colors) end,
+            group = vim.api.nvim_create_augroup("heirline_colors", { clear = true }),
+            callback = function() utils.on_colorscheme(setup_colors) end,
         })
     end,
 }
